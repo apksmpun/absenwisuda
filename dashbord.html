@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard Kehadiran</title>
   <style>
     body {
@@ -59,6 +59,12 @@
       color: #343a40;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
+
+    a.card-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -66,34 +72,44 @@
   <div class="total" id="totalHadir">Total: 0 Orang</div><br>
   <div class="grid-container" id="dataContainer"></div>
 
-
   <script>
-    const sources = {
-      "9A": "https://script.google.com/macros/s/AKfycbwD6QMcFHhblhiOMCXsnL2zGch3MDoV8kg7K-N78c1mrpmevq1NXupMwwtQoIgzKzs_/exec",
-      "9B": "https://script.google.com/macros/s/AKfycbzRGaPZq_qBWUQtzf154yGGXu28TRBuSa62m6i8DV7a7EgrogUUrhabINx26-6_Lg56/exec",
-      "9C": "https://script.google.com/macros/s/AKfycbwAfNiOzHtq3es5ZRVlpqQ2LT5TM6xinmZJgxTBGM0DJpJL4aaGmZTM1VB56-40KrcvCw/exec",
-      "9D": "https://script.google.com/macros/s/AKfycbwn8RbxDMuXrfJAK5H5PDn-dWZa3fnZ9SKN85TzrcvMoZTmZGu3z3rJp67KYqdKY3HtPg/exec",
-      "12A": "https://script.google.com/macros/s/AKfycbxuqkVZfL7KmWd9d7FEFlAaQSw_Fdy1ZiDJ0TGuU1nHOhxWZ_CeZkIUxVs_MXgqNFUqhA/exec",
-      "12B": "https://script.google.com/macros/s/AKfycbwCgYCLk-XqTQW3YrfkUpFOaod5XZCq_2oU4fY9vVePtcrNu-7RIr25iiDV9We2lMSCsg/exec",
-      "12C": "https://script.google.com/macros/s/AKfycbxgMsgTe37du_8uC1nN4fh7KGLubjkfDJ2z4U-loZiwRMKRbfxfoejF9mOS_8IU5aMQEA/exec",
-      "UNBS": "https://script.google.com/macros/s/AKfycbyZp965pXBK3jILMNFX4AT452choaPoXfZygZ1SOEaxwXn4Yne5w9lq-xb32F50lGXNtg/exec",
-      "Ortu SMA": "https://script.google.com/macros/s/AKfycbxShHi0NruqsSHZu2p0BiNocUFFBmXe1uUTA_Pd6_-ZLoC7LcEz8tCmrLmxUjGwzuCK4Q/exec",
-      "Ortu SMP": "https://script.google.com/macros/s/AKfycbwP6xc072HrbTBjWXdsUKq5pjK7cvZ4pTPwwnQ5GkW2rOP_wW3AEhbSVt3cP-aXi17wJw/exec",
-      "Ortu UNBS": "https://script.google.com/macros/s/AKfycbweZ2cMEKG1D3rXntf25H9s3K5kL-SxAnkv8MfcJSzE8f7kZAxcgKC79c3StaykAEgj/exec",
-      "Tamu": "https://script.google.com/macros/s/AKfycbyvbb_rPk_nhx3cBz67CqHlRz77A0J4duSQKU-HAzsic9TucWvF3Gb7fnEKMky8WtY_/exec"
-    };
+    const sources = [
+      { label: "9A", file: "9a.html", url: "https://script.google.com/macros/s/AKfycbwD6QMcFHhblhiOMCXsnL2zGch3MDoV8kg7K-N78c1mrpmevq1NXupMwwtQoIgzKzs_/exec" },
+      { label: "9B", file: "9b.html", url: "https://script.google.com/macros/s/AKfycbzRGaPZq_qBWUQtzf154yGGXu28TRBuSa62m6i8DV7a7EgrogUUrhabINx26-6_Lg56/exec" },
+      { label: "9C", file: "9c.html", url: "https://script.google.com/macros/s/AKfycbwAfNiOzHtq3es5ZRVlpqQ2LT5TM6xinmZJgxTBGM0DJpJL4aaGmZTM1VB56-40KrcvCw/exec" },
+      { label: "9D", file: "9d.html", url: "https://script.google.com/macros/s/AKfycbwn8RbxDMuXrfJAK5H5PDn-dWZa3fnZ9SKN85TzrcvMoZTmZGu3z3rJp67KYqdKY3HtPg/exec" },
+      { label: "12A", file: "12a.html", url: "https://script.google.com/macros/s/AKfycbxuqkVZfL7KmWd9d7FEFlAaQSw_Fdy1ZiDJ0TGuU1nHOhxWZ_CeZkIUxVs_MXgqNFUqhA/exec" },
+      { label: "12B", file: "12b.html", url: "https://script.google.com/macros/s/AKfycbwCgYCLk-XqTQW3YrfkUpFOaod5XZCq_2oU4fY9vVePtcrNu-7RIr25iiDV9We2lMSCsg/exec" },
+      { label: "12C", file: "12c.html", url: "https://script.google.com/macros/s/AKfycbxgMsgTe37du_8uC1nN4fh7KGLubjkfDJ2z4U-loZiwRMKRbfxfoejF9mOS_8IU5aMQEA/exec" },
+      { label: "UNBS", file: "unbs.html", url: "https://script.google.com/macros/s/AKfycbyZp965pXBK3jILMNFX4AT452choaPoXfZygZ1SOEaxwXn4Yne5w9lq-xb32F50lGXNtg/exec" },
+      { label: "Orang Tua SMA", file: "orangtuasma.html", url: "https://script.google.com/macros/s/AKfycbxShHi0NruqsSHZu2p0BiNocUFFBmXe1uUTA_Pd6_-ZLoC7LcEz8tCmrLmxUjGwzuCK4Q/exec" },
+      { label: "Orang Tua SMP", file: "orangtuasmp.html", url: "https://script.google.com/macros/s/AKfycbwP6xc072HrbTBjWXdsUKq5pjK7cvZ4pTPwwnQ5GkW2rOP_wW3AEhbSVt3cP-aXi17wJw/exec" },
+      { label: "Orang Tua UNBS", file: "orangtuaunbs.html", url: "https://script.google.com/macros/s/AKfycbweZ2cMEKG1D3rXntf25H9s3K5kL-SxAnkv8MfcJSzE8f7kZAxcgKC79c3StaykAEgj/exec" },
+      { label: "Tamu", file: "tamu.html", url: "https://script.google.com/macros/s/AKfycbyvbb_rPk_nhx3cBz67CqHlRz77A0J4duSQKU-HAzsic9TucWvF3Gb7fnEKMky8WtY_/exec" }
+    ];
 
     const hadirCounts = {};
 
-    async function fetchHadir(label, url) {
+    function sanitizeId(label) {
+      return label.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\-]/g, '');
+    }
+
+    async function fetchHadir({ label, file, url }) {
       const container = document.getElementById("dataContainer");
+
+      const link = document.createElement("a");
+      link.href = file;
+      link.className = "card-link";
+
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
         <div class="card-title">${label}</div>
-        <div class="card-value" id="hadir-${label}">...</div>
+        <div class="card-value" id="hadir-${sanitizeId(label)}">...</div>
       `;
-      container.appendChild(card);
+
+      link.appendChild(card);
+      container.appendChild(link);
 
       try {
         const response = await fetch(url);
@@ -105,11 +121,11 @@
           if (ayah) jumlah++;
           if (ibu) jumlah++;
         });
-        document.getElementById(`hadir-${label}`).textContent = jumlah;
+        document.getElementById(`hadir-${sanitizeId(label)}`).textContent = jumlah;
         hadirCounts[label] = jumlah;
         updateTotal();
       } catch (error) {
-        document.getElementById(`hadir-${label}`).textContent = "❌";
+        document.getElementById(`hadir-${sanitizeId(label)}`).textContent = "❌";
         hadirCounts[label] = 0;
         updateTotal();
       }
@@ -120,9 +136,7 @@
       document.getElementById("totalHadir").textContent = `Total: ${total} Orang`;
     }
 
-    for (const [label, url] of Object.entries(sources)) {
-      fetchHadir(label, url);
-    }
+    sources.forEach(fetchHadir);
   </script>
 </body>
 </html>
