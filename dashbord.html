@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Kehadiran</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fa;
+      padding: 1rem;
+      margin: 0;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      background-color: white;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      text-align: center;
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .card-value {
+      font-size: 1.5rem;
+      color: #007bff;
+      font-weight: bold;
+    }
+
+    .total {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      background-color: #e2e6ea;
+      padding: 0.8rem;
+      border-radius: 6px;
+      color: #343a40;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+  </style>
+</head>
+<body>
+  <h2>📊 Rekap Kehadiran</h2>
+  <div class="total" id="totalHadir">Total: 0 Orang</div><br>
+  <div class="grid-container" id="dataContainer"></div>
+
+
+  <script>
+    const sources = {
+      "9A": "https://script.google.com/macros/s/AKfycbwD6QMcFHhblhiOMCXsnL2zGch3MDoV8kg7K-N78c1mrpmevq1NXupMwwtQoIgzKzs_/exec",
+      "9B": "https://script.google.com/macros/s/AKfycbzRGaPZq_qBWUQtzf154yGGXu28TRBuSa62m6i8DV7a7EgrogUUrhabINx26-6_Lg56/exec",
+      "9C": "https://script.google.com/macros/s/AKfycbwAfNiOzHtq3es5ZRVlpqQ2LT5TM6xinmZJgxTBGM0DJpJL4aaGmZTM1VB56-40KrcvCw/exec",
+      "9D": "https://script.google.com/macros/s/AKfycbwn8RbxDMuXrfJAK5H5PDn-dWZa3fnZ9SKN85TzrcvMoZTmZGu3z3rJp67KYqdKY3HtPg/exec",
+      "12A": "https://script.google.com/macros/s/AKfycbwn8RbxDMuXrfJAK5H5PDn-dWZa3fnZ9SKN85TzrcvMoZTmZGu3z3rJp67KYqdKY3HtPg/exec",
+      "12B": "https://script.google.com/macros/s/AKfycbwCgYCLk-XqTQW3YrfkUpFOaod5XZCq_2oU4fY9vVePtcrNu-7RIr25iiDV9We2lMSCsg/exec",
+      "12C": "https://script.google.com/macros/s/AKfycbxgMsgTe37du_8uC1nN4fh7KGLubjkfDJ2z4U-loZiwRMKRbfxfoejF9mOS_8IU5aMQEA/exec",
+      "UNBS": "https://script.google.com/macros/s/AKfycbyZp965pXBK3jILMNFX4AT452choaPoXfZygZ1SOEaxwXn4Yne5w9lq-xb32F50lGXNtg/exec",
+      "Ortu SMA": "https://script.google.com/macros/s/AKfycbxShHi0NruqsSHZu2p0BiNocUFFBmXe1uUTA_Pd6_-ZLoC7LcEz8tCmrLmxUjGwzuCK4Q/exec",
+      "Ortu SMP": "https://script.google.com/macros/s/AKfycbwP6xc072HrbTBjWXdsUKq5pjK7cvZ4pTPwwnQ5GkW2rOP_wW3AEhbSVt3cP-aXi17wJw/exec",
+      "Ortu UNBS": "https://script.google.com/macros/s/AKfycbweZ2cMEKG1D3rXntf25H9s3K5kL-SxAnkv8MfcJSzE8f7kZAxcgKC79c3StaykAEgj/exec",
+      "Tamu": "https://script.google.com/macros/s/AKfycbyvbb_rPk_nhx3cBz67CqHlRz77A0J4duSQKU-HAzsic9TucWvF3Gb7fnEKMky8WtY_/exec"
+    };
+
+    const hadirCounts = {};
+
+    async function fetchHadir(label, url) {
+      const container = document.getElementById("dataContainer");
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="card-title">${label}</div>
+        <div class="card-value" id="hadir-${label}">...</div>
+      `;
+      container.appendChild(card);
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        let jumlah = 0;
+        data.forEach(row => {
+          const ayah = row[2]?.toLowerCase().trim() === "ya";
+          const ibu = row[3]?.toLowerCase().trim() === "ya";
+          if (ayah) jumlah++;
+          if (ibu) jumlah++;
+        });
+        document.getElementById(`hadir-${label}`).textContent = jumlah;
+        hadirCounts[label] = jumlah;
+        updateTotal();
+      } catch (error) {
+        document.getElementById(`hadir-${label}`).textContent = "❌";
+        hadirCounts[label] = 0;
+        updateTotal();
+      }
+    }
+
+    function updateTotal() {
+      const total = Object.values(hadirCounts).reduce((a, b) => a + b, 0);
+      document.getElementById("totalHadir").textContent = `Total: ${total} Orang`;
+    }
+
+    for (const [label, url] of Object.entries(sources)) {
+      fetchHadir(label, url);
+    }
+  </script>
+</body>
+</html>

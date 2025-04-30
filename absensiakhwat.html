@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Absensi Wisuda</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-yellow-50 min-h-screen flex items-center justify-center p-4">
+
+  <div class="bg-white p-6 rounded-2xl shadow-xl border-4 border-yellow-400 w-full max-w-md relative">
+    
+    <div class="text-center mb-4">
+      <img src="wisuda.jpg" alt="Topi Wisuda" class="w-20 mx-auto mb-2">
+      <h2 class="text-2xl font-bold text-blue-900">Wisuda Akhwat <br>ULUN NUHA</h2>
+      <p class="text-sm text-gray-600">Silakan isi data kehadiran</p>
+    </div>
+    
+      
+
+    <form id="dataForm" class="space-y-4 relative">
+      <div>
+        <label for="nama" class="block text-sm font-semibold text-blue-900">Nama Siswa:</label>
+        <input type="text" id="nama" name="nama" autocomplete="off"
+               class="mt-1 w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+               required />
+        <div id="suggestions" class="absolute w-full bg-white border rounded-lg mt-1 shadow-lg z-10 hidden"></div>
+      </div>
+
+      <div>
+        <label for="orangTua" class="block text-sm font-semibold text-blue-900">Status/Orang Tua:</label>
+        <select id="orangTua" name="orangTua" required
+                class="mt-1 w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400">
+            <option value="">-- Pilih --</option>
+          <option value="Ibu">Ibu</option>
+          <option value="">Tidak Ada Orang Tua</option>
+          <option value="Tamu">Tamu</option>
+        </select>
+      </div>
+
+      <button id="submitBtn" type="submit"
+              class="w-full bg-blue-900 text-yellow-300 font-semibold py-2 rounded-lg hover:bg-blue-800 transition flex items-center justify-center gap-2">
+        <span id="btnText">Kirim</span>
+        <svg id="btnSpinner" class="animate-spin h-5 w-5 text-yellow-300 hidden" xmlns="http://www.w3.org/2000/svg" fill="none"
+             viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10"
+                  stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8v8z"></path>
+        </svg>
+      </button>
+
+      <p id="status" class="text-center text-sm mt-2 text-green-600"></p>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absensi Wisuda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-sans bg-gray-100">
+
+    <!-- Navbar -->
+    <nav class="bg-gray-900 p-4">
+        <!-- Menu Icon (hamburger) -->
+        <div class="flex justify-between items-center">
+            <button class="lg:hidden text-white" onclick="toggleMenu()">
+                <span class="block w-6 h-1 bg-white mb-1"></span>
+                <span class="block w-6 h-1 bg-white mb-1"></span>
+                <span class="block w-6 h-1 bg-white"></span>
+            </button>
+            <h1 class="text-white text-xl">Absensi Wisuda</h1>
+        </div>
+    </nav>
+
+    <!-- Side Menu -->
+    <div id="menu" class="fixed top-0 left-[-250px] w-[250px] h-full bg-black bg-opacity-70 text-white transition-all duration-300 z-50 overflow-y-auto">
+
+        <ul class="pt-16 px-4 space-y-2">
+
+            <li><a href="#" onclick="loadPage('dashbord.html'); toggleMenu()" class="block py-2 px-4 rounded hover:bg-blue-600">🏠 Home</a></li>
+            <li><a href="#" onclick="loadPage('absenikhwan.html'); toggleMenu()" class="block py-2 hover:bg-blue-600">Absen Ikhwan</a></li>
+            <li><a href="#" onclick="loadPage('absensiakhwat.html'); toggleMenu()" class="block py-2 hover:bg-blue-600">Absen Akhwat</a></li>
+            <li><a href="#" onclick="loadPage('9A.html'); toggleMenu()" class="block py-2 hover:bg-blue-600">9A</a></li>
+            <li><a href="#" onclick="loadPage('9B.html'); toggleMenu()" class="block py-2 hover:bg-blue-600">9B</a></li>
+            <li><a href="#" onclick="loadPage('9C.html'); toggleMenu()" class="block py-2 hover:bg-blue-600">9C</a></li>
+            <li><a href="#" onclick="loadPage('9D.html'); toggleMenu()" class="block py-2 hover:bg-blue-600">9D</a></li>
+            <li><a href="#" onclick="loadPage('12A.html'); toggleMenu()" class="block py-2 hover:bg-blue-600">12A</a></li>
+            <li><a href="#" onclick="loadPage('12B.html'); toggleMenu()" class="block py-2 hover:bg-blue-600">12B</a></li>
+            <li><a href="#" onclick="loadPage('12C.html'); toggleMenu()" class="block py-2 hover:bg-blue-600">12C</a></li>
+            <li><a href="#" onclick="loadPage('UNBS.html'); toggleMenu()" class="block py-2 hover:bg-blue-600">UNBS</a></li>
+            <li><a href="#" onclick="loadPage('orangtuasma.html'); toggleMenu()" class="block py-2 hover:bg-blue-600">Orang Tua SMA</a></li>
+            <li><a href="#" onclick="loadPage('orangtuasmp.html'); toggleMenu()" class="block py-2 hover:bg-blue-600">Orang Tua SMP</a></li>
+            <li><a href="#" onclick="loadPage('orangtuaunbs.html'); toggleMenu()" class="block py-2 hover:bg-blue-600">Orang Tua UNBS</a></li>
+            <li><a href="#" onclick="loadPage('Tamu.html'); toggleMenu()" class="block py-2 hover:bg-blue-600">Tamu</a></li>
+        </ul>
+    </div>
+
+    <!-- Iframe untuk memuat konten -->
+    <iframe id="contentIframe" class="w-full h-[600px] mt-4" src="dashbord.html" title="Halaman Konten"></iframe>
+
+    <script>
+        // Fungsi untuk memuat halaman ke dalam iframe
+        function loadPage(page) {
+            document.getElementById('contentIframe').src = page;
+        }
+
+        // Fungsi untuk toggle menu pada mobile
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            menu.style.left = menu.style.left === '0px' ? '-250px' : '0px'; // Toggle antara tampil dan sembunyi
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Absen Kelas UNBS</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 p-6">
+  <div class="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow">
+    <h1 class="text-2xl font-bold mb-4 text-center">Kehadiran Kelas UNBS</h1>
+    
+
+    <div id="rekapStatus" class="mt-6">
+        <div class="bg-blue-100 border border-blue-300 rounded-xl p-4 shadow-md flex items-center justify-between">
+            <div class="text-lg font-semibold text-blue-700">🎓 Jumlah Hadir</div>
+
+          <div id="jumlahHadir" class="text-2xl font-bold text-blue-900">0</div>
+        </div><br>
+      </div>
+
+      <div class="mb-4">
+        <input type="text" id="searchInput" placeholder="🔍 Cari nama..."
+          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300">
+      </div>
+      
+
+      <a id="downloadExcel" href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSVnXici04kVCPkmc-YkJ-M3Gd43oSB2VwgRpLoeyBPor08ZGuyiOmdMczIjucHEOwrVxR8gVC3Vn3f/pub?output=xlsx" target="_blank"
+   class="inline-block bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition mt-4">
+  📥 Download Excel
+</a>
+
+
+
+      
+    <div id="tableContainer" class="overflow-x-auto">
+      <table class="min-w-full border border-gray-300 divide-y divide-gray-200 text-sm">
+        <thead class="bg-blue-100">
+          <tr>
+            <th class="px-4 py-2 border">No</th>
+            <th class="px-4 py-2 border">Nama</th>
+            <th class="px-4 py-2 border">Hadir</th>
+          </tr>
+        </thead>
+        <tbody id="dataBody"></tbody>
+      </table>
+    </div>
+
+    
+
+</div>
+
+  <script>
+    const sheetURL = 'https://script.google.com/macros/s/AKfycbyZp965pXBK3jILMNFX4AT452choaPoXfZygZ1SOEaxwXn4Yne5w9lq-xb32F50lGXNtg/exec';
+
+fetch(sheetURL)
+  .then(response => response.json())
+  .then(data => {
+    const tableBody = document.getElementById("dataBody");
+    const rekapDiv = document.getElementById("rekapStatus");
+    let jumlahYa = 0;
+
+    tableBody.innerHTML = ""; // Kosongkan tabel sebelum isi
+
+    data.forEach(row => {
+      const tr = document.createElement("tr");
+
+      row.forEach((cell, index) => {
+        const td = document.createElement("td");
+        td.className = "border px-4 py-2 text-center";
+
+        if (index === 2) {
+          if (cell.toString().trim().toLowerCase() === "ya") {
+            td.textContent = "✅";
+            td.classList.add("bg-green-100", "text-green-700", "font-semibold");
+            jumlahYa++;
+          } else {
+            td.textContent = cell || "-";
+          }
+        } else {
+          td.textContent = cell;
+        }
+
+        tr.appendChild(td);
+      });
+
+      tableBody.appendChild(tr);
+    });
+
+    // Tampilkan rekap jumlah hadir
+    document.getElementById("jumlahHadir").textContent = `${jumlahYa} Orang`;
+  })
+  .catch(err => {
+    console.error("Gagal ambil data:", err);
+    document.getElementById("tableContainer").innerHTML = "<p class='text-red-500'>Gagal memuat data.</p>";
+  });
+
+  function loadData() {
+  fetch(sheetURL)
+    .then(response => response.json())
+    .then(data => {
+      const tableBody = document.getElementById("dataBody");
+      const searchValue = document.getElementById("searchInput")?.value.toLowerCase() || "";
+      let jumlahYa = 0;
+
+      tableBody.innerHTML = "";
+
+      data.forEach(row => {
+        const nama = row[1]?.toString().toLowerCase();
+
+        if (nama.includes(searchValue)) {
+          const tr = document.createElement("tr");
+
+          row.forEach((cell, index) => {
+            const td = document.createElement("td");
+            td.className = "border px-4 py-2 text-center";
+
+            if (index === 2) {
+              if (cell.toString().trim().toLowerCase() === "ya") {
+                td.textContent = "✅";
+                td.classList.add("bg-green-100", "text-green-700", "font-semibold");
+                jumlahYa++;
+              } else {
+                td.textContent = cell || "-";
+              }
+            } else {
+              td.textContent = cell;
+            }
+
+            tr.appendChild(td);
+          });
+
+          tableBody.appendChild(tr);
+        }
+      });
+
+      document.getElementById("jumlahHadir").textContent = `${jumlahYa} Orang`;
+    })
+    .catch(err => {
+      console.error("Gagal ambil data:", err);
+    });
+}
+
+
+// Panggil pertama kali
+loadData();
+
+// Setiap 10 detik update data
+setInterval(loadData, 1000);
+
+
+
+
+
+
+  </script>
+</body>
+</html>
